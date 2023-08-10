@@ -5,7 +5,7 @@ This repository contains the codes for simulating fractional stochastic processi
 ## Installation
 to install the package, run the following command in the terminal:
 ```bash
-pip install git+
+pip install git+ssh://git@github.com:roholazandie/fractional_calculus_modeling.git@main
 ```
 
 For generating the animations, you need to install the [ffmpeg](https://ffmpeg.org/) package.
