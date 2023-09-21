@@ -4,11 +4,11 @@ from scipy.ndimage import zoom
 
 # Parameters
 m = 1.0  # particle mass
-delta_t = 0.0001  # time step
+dt = 0.001  # time step
 n_steps = 10000
-n_particles = 10000
-position_range = [-1.0, 1.0]  # rectangle limits for position
-momentum_range = [-2.0, 2.0]  # rectangle limits for momentum
+n_particles = 5
+position_range = [0.0, 2.0]  # rectangle limits for position
+momentum_range = [0.0, 2.0]  # rectangle limits for momentum
 
 
 def poisson_bracket(f, g, q, p):
@@ -53,15 +53,15 @@ plt.figure(figsize=(6, 5))
 
 for step in range(n_steps):
     # Hamilton's equations
-    dq = momenta / m * delta_t
-    dp = F(positions) * delta_t
+    dq = momenta / m * dt
+    dp = F(positions) * dt
 
     positions += dq
     momenta += dp
 
 
     # Update histogram every 500 steps
-    if step % 50 == 0:
+    if step % 500 == 0:
         rho_values, _, _ = np.histogram2d(positions, momenta, bins=n_bins,
                                           range=[2 * np.array(position_range), 2 * np.array(momentum_range)])
         plt.clf()
@@ -71,6 +71,7 @@ for step in range(n_steps):
         poisson_HH = poisson_bracket(H, H, positions, momenta)
         print(np.sum(poisson_HH)) # should be zero
         rho_values = rho_values / np.sum(rho_values)
+        print("sum of rho values: ", np.sum(rho_values))
         poisson_Hrho = poisson_bracket(H, rho_values, positions, momenta)
         print(np.sum(poisson_Hrho))
 
@@ -84,6 +85,6 @@ for step in range(n_steps):
         plt.ylabel('Momentum')
         plt.colorbar()
 
-        plt.pause(0.01)
+        plt.pause(0.1)
 
 plt.show()
